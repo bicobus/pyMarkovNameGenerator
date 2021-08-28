@@ -27,6 +27,7 @@ The software reads sample data from json formatted datasets. See the data folder
 of this repository for examples.
 
 ::
+
     usage: __main__.py [-h] [--list] [-n NUMBER] [-o ORDER] [-p PRIOR] [-g KEY] [-V] DATA
 
     positional arguments:
@@ -56,3 +57,4 @@ of this repository for examples.
 
 .. _Sam Twidale: https://github.com/Tw1ddle/MarkovNameGenerator
 .. _wcwidth: https://github.com/jquast/wcwidth/
+.. _poetry: https://python-poetry.org/
