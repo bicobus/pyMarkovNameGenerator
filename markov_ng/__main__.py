@@ -38,7 +38,8 @@ def add_arguments(parser: argparse.ArgumentParser):
     )
     parser.add_argument(
         "-g", "--generate", metavar="KEY", type=str,
-        help="Which dataset to use. Required unless --list is passed as an argument."
+        help="Which dataset to use. If not specified, use a random available set "
+        "instead."
     )
     parser.add_argument(
         "-V", "--version", action="version", version="%(prog)s v" + __version__
@@ -72,6 +73,7 @@ def justify(keys, values):
 
 
 if __name__ == '__main__':
+    import random
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
@@ -86,7 +88,7 @@ if __name__ == '__main__':
             print(item)
     else:
         if not args.generate:  # Because argparse cannot have conditional requirements.
-            parser.error("the following arguments are required: -g/--generate")
+            args.generate = random.choice(list(datasets.keys()))
         generator = Generator(
             load_data(args.generate, datasets),
             order=args.order,
