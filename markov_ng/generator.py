@@ -20,7 +20,7 @@ class Model:
         """
         if not alphabet or not data:
             raise ValueError("Dataset isn't valid. Either alphabet or data is empty.")
-        if not 0 >= prior <= 1:
+        if not 0 <= prior <= 1:
             raise ValueError(
                 "The prior dirichlet must be between 0 and 1, '{}' given.".format(prior)
             )
@@ -125,7 +125,8 @@ class Generator:
         for model in self.models:
             letter = model.generate(context)
             if not letter:
-                context = context[1]
+                order = model.order - 1
+                context = context[len(context) - order:len(context)]
             else:
                 break
         return letter
