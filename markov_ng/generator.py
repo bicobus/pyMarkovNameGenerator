@@ -98,6 +98,10 @@ class Generator:
                 "The value of 'order' must be an interger greater or equal to 1. (was %s)",
                 order
             )
+        if not data:
+            raise ValueError(
+                "Training dataset cannot be empty. We're expecting a list."
+            )
         self.order = order
         letters = set()
         for word in data:
