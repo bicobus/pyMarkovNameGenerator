@@ -2,10 +2,25 @@
 # Licensed under the EUPL v1.2
 # © 2021 bicobus <bicobus@keemail.me>
 import random
+from functools import lru_cache
+
+
+@lru_cache
+def construct_alphabet(data: tuple) -> set:
+    """
+    Returns a set of the characters present in a list of words.
+
+    Args:
+        data (tuple): The list of words, in as a tuple.
+    """
+    alphabet = set()
+    for word in data:
+        alphabet |= set(word)
+    return alphabet
 
 
 class Model:
-    def __init__(self, data, order, prior, alphabet):
+    def __init__(self, data, order, prior):
         """
         Creates a new Markov model.
 
@@ -16,10 +31,9 @@ class Model:
                 letter.
             prior (float): The dirichlet prior, an additing smoothing "randomness"
                 factor. Must be a float between 0 and 1.
-            alphabet (list):
         """
-        if not alphabet or not data:
-            raise ValueError("Dataset isn't valid. Either alphabet or data is empty.")
+        if not data:
+            raise ValueError("Dataset isn't valid: data is empty.")
         if not 0 <= prior <= 1:
             raise ValueError(
                 "The prior dirichlet must be between 0 and 1, '{}' given.".format(prior)
@@ -27,7 +41,8 @@ class Model:
         self.chains = {}
         self.order = order
         self.prior = prior
-        self.alphabet = alphabet
+        self.alphabet = sorted(list(construct_alphabet(tuple(data))))
+        self.alphabet.insert(0, "#")
 
         self._cache = {}
 
@@ -103,14 +118,9 @@ class Generator:
                 "Training dataset cannot be empty. We're expecting a list."
             )
         self.order = order
-        letters = set()
-        for word in data:
-            letters = letters.union({word[letter] for letter in range(len(word))})
 
-        domain = list(letters)
-        domain.insert(0, '#')
         self.models = [
-            Model(data.copy(), order - i, prior, domain)
+            Model(data.copy(), order - i, prior)
             for i in range(order)
         ]
 
