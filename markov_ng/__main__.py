@@ -64,10 +64,10 @@ def load_data(key, filenames):
 def justify(keys, values):
     padding = " "
     template = "{} → {}"
-    maxlength = max([wcswidth(key) for key in keys]) + 2
+    maxlength = max([wcswidth(key) for key in keys])
     for key, value in zip(keys, values):
         yield template.format(
-                padding * max(0, (maxlength - wcswidth(key))) + key,
+                padding * (2 + max(0, (maxlength - wcswidth(key)))) + key,
                 value,
             )
 
