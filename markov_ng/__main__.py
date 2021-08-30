@@ -9,7 +9,7 @@ from pathlib import Path
 from wcwidth import wcswidth
 
 from ._version import __version__
-from .generator import Generator
+from . import Generator
 
 
 def add_arguments(parser: argparse.ArgumentParser):
