@@ -101,9 +101,9 @@ class Model:
         self.chains = {}
 
         for key in self._cache.keys():
-            for prediction in self.alphabet:  # XXX: find better terms
-                self.chains.setdefault(key, [])
-                self.chains[key].append(self.prior + self._cache[key].count(prediction))
+            self.chains.setdefault(key, [])
+            for letter in self.alphabet:
+                self.chains[key].append(self.prior + self._cache[key].count(letter))
 
 
 class Generator:
@@ -126,21 +126,18 @@ class Generator:
 
     def generate(self):
         word = "#" * self.order
-        letter = self.get_letter(word)
+        letter = self.letter_from(word)
         while letter != "#":
             if letter:
                 word += letter
-            letter = self.get_letter(word)
+            letter = self.letter_from(word)
         return word
 
-    def get_letter(self, context):
+    def letter_from(self, context):
         letter = ""
-        context = context[len(context) - self.order:len(context)]
+        ctx_len = len(context)
         for model in self.models:
-            letter = model.generate(context)
-            if not letter:
-                order = model.order - 1
-                context = context[len(context) - order:len(context)]
-            else:
+            letter = model.generate(context[ctx_len - model.order:ctx_len])
+            if letter:
                 break
         return letter
