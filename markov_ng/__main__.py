@@ -4,6 +4,7 @@
 # © 2021 bicobus <bicobus@keemail.me>
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from wcwidth import wcswidth
@@ -71,20 +72,26 @@ def justify(keys, values):
     maxlength = max([wcswidth(key) for key in keys])
     for key, value in zip(keys, values):
         yield template.format(
-                padding * (2 + max(0, (maxlength - wcswidth(key)))) + key,
-                value,
-            )
+            padding * (2 + max(0, (maxlength - wcswidth(key)))) + key,
+            value,
+        )
 
 
 if __name__ == '__main__':
     import random
+
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     add_arguments(parser)
     args = parser.parse_args()
 
-    datasets = available_dataset(args.data)
+    try:
+        datasets = available_dataset(args.data)
+    except ValueError as e:
+        print(f"ERROR: {e}\n", file=sys.stderr)
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     if args.list:
         print("List of usable files:")
