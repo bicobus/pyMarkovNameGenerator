@@ -19,6 +19,43 @@ def construct_alphabet(data: tuple) -> set:
     return alphabet
 
 
+def train(data: list, order: int):
+    """
+    Train the model on given data.
+
+    Args:
+        data (list): Training data, as a list of words.
+        order (int): Order from the model in use.
+    """
+    bucket = {}
+    while data:
+        word = data.pop()
+        word = "#" * order + word + "#"
+        for i in range(len(word) - order):
+            key = word[i:i + order]
+            bucket.setdefault(key, [])
+            try:
+                bucket[key].append(word[i + order])
+            except IndexError:  # XXX: exception shouldn't happen anyhow
+                pass
+    return bucket
+
+
+def select_idx_from(chain):
+    """Return a randomly selected index from the Markov Chain `chain`."""
+    acc = 0
+    totals = []
+    for weight in chain:
+        acc += weight
+        totals.append(acc)
+
+    rn = random.random() * acc
+    for i, value in enumerate(totals):
+        if rn < value:
+            return i
+    return 0
+
+
 class Model:
     def __init__(self, data, order, prior):
         """
@@ -44,9 +81,8 @@ class Model:
         self.alphabet = sorted(list(construct_alphabet(tuple(data))))
         self.alphabet.insert(0, "#")
 
-        self._cache = {}
+        self._cache = train(data, order)
 
-        self.train(data)
         self.build_chains()
 
     def generate(self, key: str) -> str:
@@ -60,39 +96,8 @@ class Model:
         """
         chain = self.chains.get(key)
         if chain:
-            return self.alphabet[self._select(chain)]
+            return self.alphabet[select_idx_from(chain)]
         return None
-
-    def _select(self, chain):
-        acc = 0
-        totals = []
-        for weight in chain:
-            acc += weight
-            totals.append(acc)
-
-        rn = random.random() * acc
-        for i, value in enumerate(totals):
-            if rn < value:
-                return i
-        return 0
-
-    def train(self, data: list):
-        """
-        Train the model on given data.
-
-        Args:
-            data (list): Training data, as a list of words.
-        """
-        while data:
-            word = data.pop()
-            word = "#" * self.order + word + "#"
-            for i in range(len(word) - self.order):
-                key = word[i:i + self.order]
-                self._cache.setdefault(key, [])
-                try:
-                    self._cache[key].append(word[i + self.order])
-                except IndexError:  # XXX: exception shouldn't happen anyhow
-                    pass
 
     def build_chains(self):
         """
