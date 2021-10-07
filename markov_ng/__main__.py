@@ -46,10 +46,14 @@ def add_arguments(parser: argparse.ArgumentParser):
     )
 
 
-def available_dataset(path):
+def available_dataset(path: Path):
     if not path.exists():
         raise ValueError(
             "The provided path '{}' doesn't exists.".format(path.resolve().as_uri())
+        )
+    if not path.is_dir():
+        raise ValueError(
+            "The provided path '{}' isn't a directory.".format(path.resolve().as_uri())
         )
     return {filename.name[:-5]: filename.resolve() for filename in path.glob("*.json")}
 
