@@ -84,13 +84,13 @@ class Model:
             data (list): Training data, as a list of words.
         """
         while data:
-            d = data.pop()
-            d = "#" * self.order + d + "#"
-            for i in range(len(d) - self.order):
-                key = d[i:i + self.order]
+            word = data.pop()
+            word = "#" * self.order + word + "#"
+            for i in range(len(word) - self.order):
+                key = word[i:i + self.order]
                 self._cache.setdefault(key, [])
                 try:
-                    self._cache[key].append(d[i + self.order])
+                    self._cache[key].append(word[i + self.order])
                 except IndexError:  # XXX: exception shouldn't happen anyhow
                     pass
 
