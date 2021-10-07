@@ -12,6 +12,18 @@ wcwidth = "^0.2.5"
 [tool.poetry.dev-dependencies]
 python-lsp-server = {extras = ["pycodestyle", "rope", "yapf", "flake8"], version = "^1.2.1"}
 isort = "^5.9.3"
+pytest = "^6.2.5"
+
+[tool.pytest.ini_options]
+minversion = "6.2"
+addopts = "-ra"
+testpaths = [
+    "tests"
+]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
