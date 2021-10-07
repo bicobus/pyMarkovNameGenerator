@@ -1,9 +1,25 @@
 [tool.poetry]
-name = "MarkovNameGenerator"
-version = "0.1.0"
+name = "markov_ng"
+version = "1.0.0"
 description = "Markov process-based name and word generator, based on Sam Twidale's Haxe code."
 authors = ["bicobus <bicobus@keemail.me>"]
-license = "EUPL v1.2"
+license = "EUPL-1.2"
+readme = "README.rst"
+homepage = "https://github.com/bicobus/pyMarkovNameGenerator"
+repository = "https://github.com/bicobus/pyMarkovNameGenerator"
+keywords = ["markov", "namegen", "markov-chain", "random-generation"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries",
+]
+include = ["LICENSE", "data/*.json"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -13,6 +29,9 @@ wcwidth = "^0.2.5"
 python-lsp-server = {extras = ["pycodestyle", "rope", "yapf", "flake8"], version = "^1.2.1"}
 isort = "^5.9.3"
 pytest = "^6.2.5"
+
+[tool.poetry.scripts]
+markov_ng = "markov_ng.__main__:main"
 
 [tool.pytest.ini_options]
 minversion = "6.2"

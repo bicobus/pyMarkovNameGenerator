@@ -77,7 +77,7 @@ def justify(keys, values):
         )
 
 
-if __name__ == '__main__':
+def main():
     import random
 
     parser = argparse.ArgumentParser(
@@ -107,3 +107,7 @@ if __name__ == '__main__':
         )
         for _ in range(args.number):
             print(generator.generate().strip('#'))
+
+
+if __name__ == '__main__':
+    main()
