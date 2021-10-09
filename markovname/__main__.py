@@ -4,13 +4,11 @@
 # © 2021 bicobus <bicobus@keemail.me>
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 from typing import Union
 
 from wcwidth import wcswidth
-from wcwidth.wcwidth import wcwidth
 
 from . import Generator
 from ._version import __version__

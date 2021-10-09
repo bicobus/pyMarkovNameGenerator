@@ -3,19 +3,19 @@
 # © 2021 bicobus <bicobus@keemail.me>
 #
 # flake8: noqa
-import random
 import json
+import random
 from pathlib import Path
 
 import pytest
 
-from markovname.generator import Model, construct_alphabet, train, select_idx_from
+from markovname.generator import Model, construct_alphabet, select_idx_from, train
 from tests.fixtures import (
     ORDER,
+    sample_data_chain,
     sample_data_list,
     sample_data_trained,
     sample_data_tuple,
-    sample_data_chain,
 )
 
 
