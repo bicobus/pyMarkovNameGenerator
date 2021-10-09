@@ -1,5 +1,4 @@
-.. image:: https://ko-fi.com/img/githubbutton_sm.svg
-   :target: https://ko-fi.com/S6S36HZ6I
+.. image:: https://img.shields.io/pypi/pyversions/markovname   :alt: PyPI - Python Version
 
 .. image:: https://github.com/bicobus/pyMarkovNameGenerator/actions/workflows/tests.yml/badge.svg
    :target: https://github.com/bicobus/pyMarkovNameGenerator/actions/workflows/tests.yml
@@ -9,7 +8,18 @@
 =======================
 
 Markov chain-based name generator based on `Sam Twidale`_ implementation in
-Haxe.
+Haxe. consider this work to be a python port with functionnally the same level
+of functionality. Feed it a list of training data, and it'll spew out a bunch of
+new words.
+
+It comes with the training data compiled by Sam, and made available under
+Creative Commons `BY-NC 4.0`.
+
+If you appreciate this work, consider `buying me a coffee`_.
+
+Install using::
+
+  pip install markovname
 
 Requirements
 ============
@@ -63,3 +73,4 @@ of this repository for examples.
 .. _Sam Twidale: https://github.com/Tw1ddle/MarkovNameGenerator
 .. _wcwidth: https://github.com/jquast/wcwidth/
 .. _poetry: https://python-poetry.org/
+.. _Buy me a coffee: https://ko-fi.com/S6S36HZ6I
