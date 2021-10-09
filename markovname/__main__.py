@@ -4,19 +4,28 @@
 # © 2021 bicobus <bicobus@keemail.me>
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
+from typing import Union
 
 from wcwidth import wcswidth
+from wcwidth.wcwidth import wcwidth
 
-from ._version import __version__
 from . import Generator
+from ._version import __version__
+
+FILEPATH = Path(__file__).resolve().parent
 
 
 def add_arguments(parser: argparse.ArgumentParser):
     parser.add_argument(
-        "data", metavar="DATA", type=Path,
-        help="Path containing the data sets."
+        "data", metavar="DATA", type=Path, nargs="?",
+        default=Path(FILEPATH, "data"),
+        help=(
+            "Path containing the data sets. If none are given, will try to use the "
+            "files shipped with the software."
+        )
     )
     parser.add_argument(
         "--list", action="store_true",
@@ -45,6 +54,9 @@ def add_arguments(parser: argparse.ArgumentParser):
     parser.add_argument(
         "-V", "--version", action="version", version="%(prog)s v" + __version__
     )
+    parser.add_argument(
+        "-v", "--verbose", action="count", default=0, help="Verbose mode."
+    )
 
 
 def available_dataset(path: Path):
@@ -59,21 +71,44 @@ def available_dataset(path: Path):
     return {filename.name[:-5]: filename.resolve() for filename in path.glob("*.json")}
 
 
-def load_data(key, filenames):
+def load_data(key: str, filenames: dict[str, Path]) -> Union[list[str], None]:
     jsonfile = filenames.get(key)
     if not jsonfile:
         return None
     return json.load(jsonfile.open())
 
 
+def pad(maxlength: int, value: str, buff: int =1, padding: str =" ") -> str:
+    return padding * (buff + max(0, (maxlength - wcswidth(value))))
+
+
 def justify(keys, values):
-    padding = " "
     template = "{} → {}"
     maxlength = max([wcswidth(key) for key in keys])
     for key, value in zip(keys, values):
         yield template.format(
-            padding * (2 + max(0, (maxlength - wcswidth(key)))) + key,
+            pad(maxlength, key, buff=2) + key,
             value,
+        )
+
+
+def explain(args):
+    """Print various informations about the current settings and training dataset."""
+    if not args.verbose:
+        return
+    kv = {
+        "Training dataset": args.generate,
+        "Order": str(args.order),
+        "Prior": str(args.prior),
+        "Words to generate": str(args.number),
+    }
+    maxlength = max([wcswidth(k) for k in kv.keys()])
+    for k, v in kv.items():
+        print(
+            "{}: {}".format(
+                k,
+                pad(maxlength, k, 0) + v
+            )
         )
 
 
@@ -93,6 +128,10 @@ def main():
         parser.print_help(sys.stderr)
         sys.exit(1)
 
+    if not datasets:
+        print("No dataset found for given path '{}'.".format(args.data), file=sys.stderr)
+        sys.exit(1)
+
     if args.list:
         print("List of usable files:")
         for item in justify(datasets.keys(), datasets.values()):
@@ -100,11 +139,16 @@ def main():
     else:
         if not args.generate:  # Because argparse cannot have conditional requirements.
             args.generate = random.choice(list(datasets.keys()))
-        generator = Generator(
-            load_data(args.generate, datasets),
-            order=args.order,
-            prior=args.prior
-        )
+        dataset = load_data(args.generate, datasets)
+        if not dataset:
+            raise Exception(
+                (
+                    "The training data selected '{}' couldn't be loaded. "
+                    "Make sure you are selecting from the index (--list)."
+                ).format(args.generate)
+            )
+        generator = Generator(dataset, order=args.order, prior=args.prior)
+        explain(args)
         for _ in range(args.number):
             print(generator.generate().strip('#'))
 

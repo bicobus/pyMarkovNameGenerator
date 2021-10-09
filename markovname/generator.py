@@ -3,6 +3,7 @@
 # © 2021 bicobus <bicobus@keemail.me>
 import random
 from functools import lru_cache
+from typing import Union
 
 
 @lru_cache
@@ -85,7 +86,7 @@ class Model:
 
         self.build_chains()
 
-    def generate(self, key: str) -> str:
+    def generate(self, key: str) -> Union[str, None]:
         """
         Attempts to generate the next letter in the word given in the context.
 
@@ -112,7 +113,7 @@ class Model:
 
 
 class Generator:
-    def __init__(self, data: list, order: int, prior: float):
+    def __init__(self, data: list[str], order: int, prior: float):
         if not isinstance(order, int) or order <= 0:
             raise ValueError(
                 "The value of 'order' must be an interger greater or equal to 1. (was %s)",
