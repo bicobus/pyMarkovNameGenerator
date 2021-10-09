@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "markov_ng"
+name = "markovname"
 version = "1.0.0"
 description = "Markov process-based name and word generator, based on Sam Twidale's Haxe code."
 authors = ["bicobus <bicobus@keemail.me>"]
@@ -19,7 +19,6 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Topic :: Software Development :: Libraries",
 ]
-include = ["LICENSE", "data/*.json"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -31,7 +30,7 @@ isort = "^5.9.3"
 pytest = "^6.2.5"
 
 [tool.poetry.scripts]
-markov_ng = "markov_ng.__main__:main"
+markovname = "markovname.__main__:main"
 
 [tool.pytest.ini_options]
 minversion = "6.2"

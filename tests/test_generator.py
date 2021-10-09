@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from markov_ng.generator import Model, construct_alphabet, train, select_idx_from
+from markovname.generator import Model, construct_alphabet, train, select_idx_from
 from tests.fixtures import (
     ORDER,
     sample_data_list,
