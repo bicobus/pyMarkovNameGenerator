@@ -1,5 +1,5 @@
 .. image:: https://img.shields.io/pypi/pyversions/markovname
-   :alt: PyPI - Python Version
+   :target: https://pypi.org/project/markovname
 
 .. image:: https://github.com/bicobus/pyMarkovNameGenerator/actions/workflows/tests.yml/badge.svg
    :target: https://github.com/bicobus/pyMarkovNameGenerator/actions/workflows/tests.yml
