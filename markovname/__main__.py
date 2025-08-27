@@ -45,9 +45,9 @@ def add_arguments(parser: argparse.ArgumentParser):
         "and 1."
     )
     parser.add_argument(
-        "-g", "--generate", metavar="KEY", type=str,
+        "-g", "--generate", metavar="KEY", action="append",
         help="Which dataset to use. If not specified, use a random available set "
-        "instead."
+        "instead. Can be used multiple times to combine datasets."
     )
     parser.add_argument(
         "-V", "--version", action="version", version="%(prog)s v" + __version__
@@ -136,15 +136,18 @@ def main():
             print(item)
     else:
         if not args.generate:  # Because argparse cannot have conditional requirements.
-            args.generate = random.choice(list(datasets.keys()))
-        dataset = load_data(args.generate, datasets)
-        if not dataset:
-            raise Exception(
-                (
-                    "The training data selected '{}' couldn't be loaded. "
-                    "Make sure you are selecting from the index (--list)."
-                ).format(args.generate)
-            )
+            args.generate = [random.choice(list(datasets.keys()))]
+        dataset = []
+        for set_name in args.generate:
+            data = load_data(set_name, datasets)
+            if not data:
+                raise Exception(
+                    (
+                        "The training data selected '{}' couldn't be loaded. "
+                        "Make sure you are selecting from the index (--list)."
+                    ).format(set_name)
+                )
+            dataset.extend(data)
         generator = Generator(dataset, order=args.order, prior=args.prior)
         explain(args)
         for _ in range(args.number):
