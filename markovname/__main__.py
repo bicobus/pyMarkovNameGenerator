@@ -147,8 +147,16 @@ def main():
             )
         generator = Generator(dataset, order=args.order, prior=args.prior)
         explain(args)
-        for _ in range(args.number):
-            print(generator.generate().strip('#'))
+        i = 0
+        tryagain = 0
+        while i < args.number:
+            result = generator.generate().strip("#")
+            if result not in dataset and tryagain < 3:
+                tryagain += 1
+                continue
+            i += 1
+            tryagain = 0
+            print(result)
 
 
 if __name__ == '__main__':
