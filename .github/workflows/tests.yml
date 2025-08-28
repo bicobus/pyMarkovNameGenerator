@@ -14,6 +14,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -49,4 +52,6 @@ jobs:
         run: poetry install --no-interaction
 
       - name: Run tests
-        run: poetry run pytest
+        run: |
+          source VENV
+          poetry run pytest
