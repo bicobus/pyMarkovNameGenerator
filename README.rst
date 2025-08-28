@@ -66,7 +66,8 @@ of this repository for examples.
                            (default: 0)
      -g KEY, --generate KEY
                            Which dataset to use. If not specified, use a random
-                           available set instead. (default: None)
+                           available set instead. Can be used multiple times to
+                           combine datasets. (default: None)
      -V, --version         show program's version number and exit
 
 
