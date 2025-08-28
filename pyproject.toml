@@ -24,7 +24,7 @@ classifiers = [
 python = "^3.9"
 wcwidth = "^0.2.5"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 isort = "^5.9.3"
 pytest = "^6.2.5"
 black = "^24.3"
