@@ -53,5 +53,5 @@ jobs:
 
       - name: Run tests
         run: |
-          source VENV
+          source $VENV
           poetry run pytest
