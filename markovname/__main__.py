@@ -154,7 +154,7 @@ def main():
         tryagain = 0
         while i < args.number:
             result = generator.generate().strip("#")
-            if result not in dataset and tryagain < 3:
+            if result in dataset and tryagain < 3:
                 tryagain += 1
                 continue
             i += 1
