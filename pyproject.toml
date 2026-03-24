@@ -15,13 +15,12 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries",
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.13"
 wcwidth = "^0.2.5"
 
 [tool.poetry.group.dev.dependencies]
